@@ -1,61 +1,138 @@
-/* style.css v1.0.5 — Spiritual Blue-Green theme */
-
-/* Root */
-:root{
-  --bg1: #e9fbfb;
-  --bg2: #d9f3f4;
-  --accent1: #00eaff;
-  --accent2: #0ea5b3;
-  --text: #043b4d;
-  --muted: #356b6d;
-  --card: rgba(255,255,255,0.9);
-  --glass: rgba(255,255,255,0.6);
-  --radius: 14px;
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-*{box-sizing:border-box}
-body{margin:0;font-family:Inter, Poppins, system-ui, Arial;background:linear-gradient(180deg,var(--bg1),var(--bg2));color:var(--text);-webkit-font-smoothing:antialiased}
-.page-root{max-width:980px;margin:0 auto;padding:20px}
+body {
+    font-family: "Poppins", sans-serif;
+    background: #f3f3f7;
+    color: #333;
+    line-height: 1.6;
+}
 
-/* cards/sections */
-.section-card{background:var(--card);border-radius:var(--radius);padding:20px;margin:18px 0;box-shadow:0 8px 30px rgba(2,18,20,0.06);backdrop-filter:blur(6px)}
-.wrap{max-width:900px;margin:0 auto}
-.narrow{max-width:760px;margin:0 auto}
+/* Navigation Bar */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding: 18px;
+    background: #ffffffd5;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #eee;
+}
 
-/* hero */
-.logo-small{font-weight:700;color:var(--accent2);letter-spacing:1px;margin-bottom:6px}
-.hero-title{font-size:28px;margin:6px 0;color:var(--text)}
-.hero-sub{color:var(--muted);margin-bottom:12px}
-.cta-row{display:flex;gap:10px;margin-top:12px}
-.btn-primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#002; padding:10px 14px;border-radius:999px;text-decoration:none;border:0;font-weight:700}
-.btn-outline{background:transparent;border:1px solid rgba(4,59,77,0.06);padding:10px 14px;border-radius:999px}
-.btn-ghost{background:transparent;border:0;color:var(--muted);padding:10px}
+nav a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+    transition: 0.3s ease;
+}
 
-/* layout helpers */
-.row{display:flex;gap:10px;align-items:center;margin-top:10px}
-.cols-2 > *{flex:1}
-.action-row{display:flex;gap:10px;margin-top:14px}
+nav a:hover {
+    color: #8a63d2;
+}
 
-/* inputs */
-input, select, textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(4,59,77,0.06);font-size:15px;background:white;color:var(--text)}
-textarea{min-height:120px;resize:vertical}
+/* Page Container */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
 
-/* result box */
-.result-box{background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.96));padding:14px;border-radius:12px;border-left:6px solid var(--accent2);margin-top:12px}
-.healing-text{white-space:pre-line;color:var(--text);line-height:1.6}
-.chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,230,255,0.08);color:var(--accent2);margin-right:8px;font-weight:600}
+/* Headings */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #6b52c4;
+    font-weight: 600;
+}
 
-/* affirmation */
-.affirm-box{padding:12px;border-radius:10px;background:linear-gradient(180deg,rgba(14,165,179,0.06),rgba(0,234,255,0.02));font-weight:600}
+/* Input Fields */
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    font-size: 15px;
+    transition: 0.3s;
+}
 
-/* small text */
-.muted{color:var(--muted)}
-.tiny-muted{font-size:13px;color:rgba(3,59,77,0.6)}
-.footer{margin-top:24px;text-align:center;color:var(--muted)}
+input:focus, textarea:focus {
+    border-color: #8a63d2;
+    outline: none;
+    box-shadow: 0 0 5px rgba(138, 99, 210, 0.3);
+}
 
-/* responsive */
-@media (max-width:720px){
-  .row{flex-direction:column}
-  .cta-row{flex-direction:column;align-items:stretch}
-  .hero-title{font-size:22px}
+/* Buttons */
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #8a63d2;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #6b52c4;
+}
+
+/* Prediction Output Box */
+.output-box {
+    padding: 18px;
+    margin-top: 20px;
+    background: #f6f3ff;
+    border-left: 4px solid #8a63d2;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+/* Healing Page */
+.healing-box {
+    padding: 20px;
+    background: #fff9f3;
+    border-left: 4px solid #f5a623;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.healing-text {
+    font-style: italic;
+    color: #c47a16;
+}
+
+/* Affirmation Box */
+.affirmation-box {
+    padding: 18px;
+    background: #eafaf5;
+    border-left: 4px solid #4dbb94;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.affirmation-text {
+    color: #2c7a64;
+    font-weight: 500;
+}
+
+/* Footer */
+footer {
+    margin-top: 40px;
+    text-align: center;
+    padding: 18px;
+    color: #777;
+    font-size: 14px;
 }
