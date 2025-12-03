@@ -1,17 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Your Future</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Prediction</title>
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        window.onload = function () {
+            const params = new URLSearchParams(window.location.search);
+
+            const name = params.get("name");
+            const mood = params.get("mood");
+            const dob = params.get("dob");
+            const question = params.get("question");
+
+            document.getElementById("name").innerText = name;
+            document.getElementById("mood").innerText = mood;
+            document.getElementById("dob").innerText = dob;
+            document.getElementById("question").innerText = question || "—";
+
+            // Simple spiritually-inspired prediction
+            let prediction = "";
+
+            if (mood === "Sad") {
+                prediction =
+                    "Your heart is seeking rest. Ancient texts suggest grounding yourself with silence and deep breathing. Clarity is coming.";
+            } else if (mood === "Happy") {
+                prediction =
+                    "Your energy is aligned. This is the right phase to start new things. Scriptures describe this state as *Sattva* — balanced & clear.";
+            } else if (mood === "Confused") {
+                prediction =
+                    "Confusion is the doorway to clarity. Your mind is reorganizing itself. Go slow. Don’t rush decisions.";
+            } else if (mood === "Low Energy") {
+                prediction =
+                    "Your Prana is low. Soft routines, warm water, and sunlight can help. You’re entering a healing phase.";
+            } else {
+                prediction = "Your path is opening. Trust the process.";
+            }
+
+            document.getElementById("prediction").innerText = prediction;
+        };
+    </script>
 </head>
 
-<body onload="loadResult()">
-<header>Your Future Result</header>
+<body>
+    <nav class="navbar">
+        <h2 class="logo">Siya 11:11</h2>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a class="active" href="prediction.html">Prediction</a></li>
+            <li><a href="healing.html">Healing</a></li>
+            <li><a href="affirmation.html">Affirmations</a></li>
+            <li><a href="voice.html">Voice Healing</a></li>
+        </ul>
+    </nav>
 
-<div class="container">
-  <div id="resultText"></div>
-</div>
+    <section class="result-page">
+        <h1>Your Personalized Prediction</h1>
 
-<script src="script.js"></script>
+        <div class="result-box">
+            <p><b>Name:</b> <span id="name"></span></p>
+            <p><b>DOB:</b> <span id="dob"></span></p>
+            <p><b>Mood:</b> <span id="mood"></span></p>
+            <p><b>Your Question:</b> <span id="question"></span></p>
+
+            <h2>Prediction</h2>
+            <p id="prediction"></p>
+        </div>
+    </section>
 </body>
 </html>
