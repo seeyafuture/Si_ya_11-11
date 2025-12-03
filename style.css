@@ -1,42 +1,76 @@
-body {
-  background: #000;
-  color: #fff;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+/* ==========================
+   SeeYa — calming blue/green theme
+   Theme B: Spiritual Blue-Green
+   ========================== */
+
+:root{
+  --bg-1: #071b1a;
+  --bg-2: #072f2d;
+  --card: rgba(255,255,255,0.03);
+  --muted: rgba(255,255,255,0.82);
+  --accent1: #00eaff;
+  --accent2: #7cf8ff;
+  --accent3: #6be8b6;
+  --glass: rgba(255,255,255,0.06);
+  --radius: 12px;
+  --shadow: 0 8px 30px rgba(2,18,20,0.6);
+  --font: "Poppins", Arial, sans-serif;
 }
 
-header {
-  text-align: center;
-  padding: 20px;
-  font-size: 28px;
-  font-weight: bold;
-  background: #111;
-}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:var(--font);background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:var(--muted);-webkit-font-smoothing:antialiased}
+.container{max-width:1100px;margin:0 auto;padding:18px}
 
-.container {
-  width: 90%;
-  margin: auto;
-  margin-top: 30px;
-}
+/* Header */
+.site-header{backdrop-filter: blur(6px); background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06)); border-bottom:1px solid rgba(255,255,255,0.03)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo-dot{width:12px;height:12px;border-radius:50%;background:linear-gradient(90deg,var(--accent2),var(--accent3));box-shadow:0 0 10px rgba(0,230,255,0.12)}
+.brand-text{font-weight:600;font-size:18px;color:var(--accent2)}
+.top-nav{display:flex;gap:10px;align-items:center}
+.top-nav .nav-link{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:8px;transition:all .18s}
+.top-nav .nav-link:hover{background:var(--glass);color:var(--accent1)}
+.top-nav .nav-link.active{background:rgba(0,230,255,0.06);color:var(--accent1)}
 
-button {
-  padding: 12px 18px;
-  background: #4e7cff;
-  border: none;
-  color: white;
-  font-size: 18px;
-  border-radius: 8px;
-  margin-top: 15px;
-}
-button:hover {
-  background: #6b90ff;
-}
+/* Hero */
+.hero{padding:56px 0; text-align:center}
+.hero-inner{max-width:820px;margin:0 auto}
+.hero-title{font-size:34px;margin:0 0 8px;color:#e9ffff;letter-spacing:-0.5px}
+.hero-sub{opacity:0.9;margin:0 0 18px;color:rgba(235,255,255,0.85)}
+.hero-cta{display:flex;gap:12px;justify-content:center;margin-top:12px}
+.hero-note{font-size:13px;color:rgba(235,255,255,0.75);margin-top:14px}
 
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: none;
+/* Buttons */
+.btn{display:inline-block;border-radius:999px;padding:10px 18px;font-weight:600;text-decoration:none;cursor:pointer;border:0}
+.btn-primary{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#012;box-shadow:0 8px 20px rgba(0,230,255,0.06)}
+.btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--muted)}
+.btn-ghost{background:transparent;color:var(--muted);border:0}
+
+/* Sections */
+.section-soft{padding:28px 0}
+.container .card{background:var(--card);border-radius:var(--radius);padding:18px;border:1px solid rgba(255,255,255,0.03);box-shadow:var(--shadow)}
+.inline-actions{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+.muted{color:rgba(230,255,255,0.85);opacity:0.9}
+.small-muted{font-size:13px;color:rgba(230,255,255,0.65)}
+
+/* Healing embed */
+.section-centered{padding:28px 0}
+.narrow{max-width:780px;margin:0 auto}
+.healing-card textarea{min-height:110px;border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.04);background:rgba(0,0,0,0.15);color:inherit;width:100%}
+.small-input{width:72px;padding:10px;border-radius:8px}
+
+/* chips */
+.chip{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(0,200,255,0.06);color:var(--accent2);margin:6px 6px 6px 0;font-weight:600}
+
+/* footer */
+.site-footer{padding:18px 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:28px;text-align:center}
+.footer-inner{display:flex;justify-content:center;align-items:center}
+
+/* small responsive */
+@media (max-width:800px){
+  .top-nav{display:none}
+  .hero-title{font-size:26px}
+  .header-inner{padding:10px}
+  .hero{padding:40px 12px}
+  .container{padding:12px}
 }
