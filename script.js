@@ -1,147 +1,285 @@
-/* script.js - numerology + simple traditional-inspired mapping
-   This only uses user name, age and mood to produce an entertainment-style insight.
-   It stores input in localStorage and shows a composed result in result.html.
-*/
+/* -------------------------------------------------------
+   SEEYA – Final Healing Engine Script (Full Version)
+   ------------------------------------------------------- */
 
-function sanitizeName(n){
-  if(!n) return '';
-  return n.replace(/[^a-zA-Z]/g,'').toUpperCase();
+/* ========== GLOBAL SETTINGS ========== */
+let userVoice = localStorage.getItem("ttsVoice") || "Raveena";
+let bgSound = localStorage.getItem("bgMusic") || "none";
+let voiceSpeed = Number(localStorage.getItem("voiceSpeed") || 1);
+
+
+/* ========== MAIN HEALING FUNCTION ========== */
+function analyzeAndHeal() {
+    const text = document.getElementById("feelingText").value.trim();
+    if (!text) return alert("Write what you're feeling.");
+
+    const tag = document.getElementById("feelingTag").value;
+    const intensity = document.getElementById("intensity").value;
+
+    const output = buildSupportiveText(text, intensity, tag);
+
+    document.getElementById("chips").innerHTML = `
+        <span class="chip">Feeling: ${output.emotion}</span>
+        <span class="chip">Intensity: ${intensity}/10</span>
+    `;
+
+    document.getElementById("headline").innerText = output.title;
+    document.getElementById("analysis").innerText = output.explanation;
+    document.getElementById("plan").innerText = output.steps;
+    document.getElementById("spiritual").innerText = output.spiritual;
+
+    document.getElementById("resultBox").style.display = "block";
 }
 
-// simple Pythagorean numerology: A=1 ... I=9, J=1 ...
-function computeNameNumber(name){
-  const map = {};
-  // create map A-I:1-9, J-R:1-9, S-Z:1-8 (wrap)
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  for(let i=0;i<letters.length;i++){
-    map[letters[i]] = ((i)%9)+1; // cycles 1..9
-  }
-  let sum = 0;
-  const s = sanitizeName(name);
-  for(let ch of s) sum += (map[ch]||0);
-  // reduce to single digit 1..9
-  while(sum > 9){
-    let temp=0;
-    String(sum).split('').forEach(d=> temp += Number(d));
-    sum = temp;
-  }
-  if(sum === 0) sum = 5; // neutral fallback
-  return sum;
+
+
+
+/* =======================================================
+   DEEP EMOTION + TRAUMA ROOT ANALYZER
+   ======================================================= */
+function buildSupportiveText(text, intensity, manualTag) {
+
+    const emotions = {
+        sadness: ["sad","cry","hurt","empty","down","broken","lost"],
+        anxiety: ["scared","nervous","fear","pressure","panic","can't breathe"],
+        anger: ["angry","frustrated","annoyed","hate","irritated"],
+        loneliness: ["alone","lonely","no one","isolated"],
+        confusion: ["confused","stuck","don't know","doubt","overthinking"],
+        guilt: ["guilty","fault","my mistake","blame"],
+        hope: ["happy","hopeful","good","excited"]
+    };
+
+    let detectedEmotion = manualTag !== "Auto-detect" ? manualTag : "Confused";
+
+    textLower = text.toLowerCase();
+
+    for (let emo in emotions) {
+        if (emotions[emo].some(w => textLower.includes(w))) {
+            detectedEmotion = emo.charAt(0).toUpperCase() + emo.slice(1);
+        }
+    }
+
+    /* ---------- EXPLANATION ---------- */
+    const explanation = generateExplanation(detectedEmotion, text, intensity);
+
+    /* ---------- PLAN ---------- */
+    const steps = generatePlan(detectedEmotion);
+
+    /* ---------- SPIRITUAL ---------- */
+    const spiritual = generateSpiritual(detectedEmotion);
+
+    return {
+        emotion: detectedEmotion,
+        title: titleFor(detectedEmotion),
+        explanation,
+        steps,
+        spiritual
+    };
 }
 
-// simple mapping from number -> themed archetype & keywords
-const archetypes = {
-  1: {name:'Leader (Agni)', theme:'initiative, courage, new starts', focus:'Take bold but mindful steps'},
-  2: {name:'Supporter (Shakti)', theme:'cooperation, patience, relationships', focus:'Practice listening and small acts of kindness'},
-  3: {name:'Creative (Brahma)', theme:'expression, learning, growth', focus:'Start a small creative project'},
-  4: {name:'Builder (Vayu)', theme:'discipline, structure, planning', focus:'Make a simple 7-day plan'},
-  5: {name:'Explorer (Indra)', theme:'change, freedom, curiosity', focus:'Try one new thing this week'},
-  6: {name:'Nurturer (Prithvi)', theme:'care, balance, home', focus:'Focus on rest and relationships'},
-  7: {name:'Seeker (Chandra)', theme:'introspection, wisdom, study', focus:'Spend 10 minutes in quiet reflection'},
-  8: {name:'Ambition (Surya)', theme:'power, leadership, reward', focus:'Prioritize 1 important goal'},
-  9: {name:'Humanitarian (Dharma)', theme:'completion, giving back, vision', focus:'Do a small act for someone today'}
-};
 
-// Map mood -> modifier words
-const moodMap = {
-  'Happy': {tone:'bright', advice:'keep amplifying gratitude'},
-  'Confused': {tone:'uncertain', advice:'slow down, journal for clarity'},
-  'Stressed': {tone:'tense', advice:'focus on breathing and short walks'},
-  'Excited': {tone:'high-energy', advice:'channel energy into creativity'},
-  'Calm': {tone:'steady', advice:'build small daily routines'},
-  'Motivated': {tone:'driven', advice:'convert motivation into schedule'}
-};
 
-// Small age bracket insights
-function ageBracket(age){
-  if(!age) return 'adult';
-  age = Number(age);
-  if(age < 18) return 'youth';
-  if(age <= 30) return 'young-adult';
-  if(age <= 50) return 'mid-life';
-  return 'senior';
+
+
+/* ========== EMOTION TITLE ========== */
+function titleFor(e) {
+    switch (e) {
+        case "Sadness": case "Sad": return "You're carrying something heavy — let’s understand it gently.";
+        case "Anxiety": return "It's okay to pause — let's calm this storm together.";
+        case "Anger": return "Your mind is overwhelmed — let's unpack this safely.";
+        case "Loneliness": return "You deserve connection — let's soften this feeling.";
+        case "Confusion": return "It's okay to not know — let's untangle your thoughts.";
+        default: return "Let's work through this together.";
+    }
 }
 
-function composePrediction(name, age, mood){
-  const number = computeNameNumber(name);
-  const arch = archetypes[number] || archetypes[5];
-  const moodInfo = moodMap[mood] || {tone:'neutral',advice:'be mindful'};
-  const ageGroup = ageBracket(age);
 
-  // Construct a gentle, culturally-inspired paragraph + suggestions
-  let title = `Hello ${name||'friend'} — Insight for today`;
-  let summary = `As per a simple name-numerology number (${number}) you align with *${arch.name}* — associated with ${arch.theme}. Right now your mood is ${moodInfo.tone} and you are in the ${ageGroup} stage.`;
 
-  let detail = `Short insight: ${arch.focus}. Since you feel ${mood.toLowerCase()}, ${moodInfo.advice}. For your age group (${age||'N/A'}), focus on ${ageGroup === 'youth' ? 'learning & growth' : ageGroup === 'young-adult' ? 'skill building' : ageGroup === 'mid-life' ? 'stability & contribution' : 'well-being & legacy' }.`;
+/* ========== EXPLANATIONS ========== */
+function generateExplanation(e, text, intensity) {
+    const base = {
+        Sadness:
+            "This sadness seems to come from emotional exhaustion and unmet expectations. It doesn't mean you're weak — it means you've been strong alone for too long.",
+        Anxiety:
+            "Your mind is trying to protect you by imagining worst-case scenarios. It's not your fault — it's a survival response triggered by overstimulation.",
+        Anger:
+            "Your anger is a sign of boundaries being crossed or feeling unheard. Beneath anger, there is usually hurt.",
+        Loneliness:
+            "Loneliness here isn't about people missing — it's about emotional belonging missing. You want to be understood deeply.",
+        Confusion:
+            "Your mind feels pulled in multiple directions. When clarity drops, it’s usually due to emotional overload.",
+    };
 
-  // Actionable suggestions (ritual-inspired, non-religious)
-  let suggestions = [
-    `Daily 7-minute breathing or mindfulness practice`,
-    `Spend 20 minutes on a focused task related to your top goal`,
-    `If you feel stuck: write 3 small steps you can start today`
-  ];
+    let extra =
+        text.length > 200
+            ? "You’ve expressed a lot — which means you're finally letting things out instead of holding everything inside."
+            : "You’re aware of what you’re feeling, and that awareness alone is healing.";
 
-  // Optional small 'remedy' inspired suggestions (colors/mantras as gentle prompts)
-  const remedies = [
-    `Color to wear today: ${['#ffb86b','#7cf8ff','#ffd1e6','#c8ffb8','#ffd58a'][number%5]}`,
-    `Focus word for today: ${arch.name.split(' ')[0]}`
-  ];
+    if (intensity > 7) extra += " The intensity shows this has been piling up unaddressed for a while.";
 
-  return {
-    title, summary, detail, suggestions, remedies, archNumber: number, archetype: arch
-  };
+    return base[e] + " " + extra;
 }
 
-/* --- Storage + navigation helpers --- */
-function submitForm(){
-  const name = document.getElementById('name').value.trim();
-  const age = document.getElementById('age').value.trim();
-  const mood = document.getElementById('mood').value;
 
-  if(!name || !age){
-    alert('Please enter at least your name and age.');
-    return;
-  }
-  // store
-  localStorage.setItem('sv_name', name);
-  localStorage.setItem('sv_age', age);
-  localStorage.setItem('sv_mood', mood);
-  // go to result
-  window.location.href = 'result.html';
+
+/* ========== STEP-BY-STEP PLAN ========== */
+function generatePlan(e) {
+    const plans = {
+        Sadness: `
+1. Sit somewhere quiet and take 3 slow breaths.
+2. Place your hand on your chest — acknowledge “I’m hurting.”
+3. Write 2 lines about what you wish someone understood.
+4. Drink a glass of water — physical grounding helps.
+5. If possible, step outside for 2 minutes of fresh air.
+        `,
+        Anxiety: `
+1. Inhale 4 seconds, hold 2, exhale 6 — repeat 4 times.
+2. Identify: “What can I control right now?”
+3. Separate fear vs reality — write one line each.
+4. Relax your shoulders — anxiety hides in the body.
+5. Touch something cold — brings your mind back to the present.
+        `,
+        Loneliness: `
+1. Accept the feeling — it’s valid.
+2. Ask yourself: “What connection am I truly craving?”
+3. Message one safe person — even a simple hi.
+4. Shift environment — open a window or move rooms.
+5. Do something that reconnects you to yourself.
+        `,
+        Anger: `
+1. Pause — don’t act.
+2. Identify what wound anger is protecting.
+3. Write 1 sentence: “What hurt me in this?”
+4. Wash your face or hands with cool water.
+5. Revisit the situation when calmer.
+        `,
+        Confusion: `
+1. Slow down — clarity cannot appear in noise.
+2. Identify your top fear.
+3. Write the smallest next step you can take.
+4. Don’t decide big things while overloaded.
+5. Let the mind settle — answers follow.
+        `
+    };
+
+    return plans[e] || "Breathe. You’re doing better than you think.";
 }
 
-function clearForm(){
-  document.getElementById('name').value = '';
-  document.getElementById('age').value = '';
-  document.getElementById('mood').selectedIndex = 0;
+
+
+/* ========== SPIRITUAL GUIDANCE (INDIAN) ========== */
+function generateSpiritual(e) {
+    const guide = {
+        Sadness: "Chant 'Om Shanti' 11 times softly. It stabilizes the emotional body.",
+        Anxiety: "Place your right hand on your stomach and breathe — activates the solar plexus chakra.",
+        Anger: "Try 1 minute of 'Sheetali Pranayama' — instantly cools the mind.",
+        Loneliness: "Light a small diya or candle — symbolizes inner presence.",
+        Confusion: "Touch the earth/ground for 5 seconds — grounding clears mental fog."
+    };
+    return guide[e] || "Sit silently for 30 seconds — let the mind settle.";
 }
 
-/* On result page load */
-function loadResult(){
-  const name = localStorage.getItem('sv_name') || '';
-  const age = localStorage.getItem('sv_age') || '';
-  const mood = localStorage.getItem('sv_mood') || 'Calm';
 
-  const out = composePrediction(name, age, mood);
 
-  const header = document.getElementById('resultHeader');
-  const body = document.getElementById('resultBody');
-  const advice = document.getElementById('resultAdvice');
+/* =======================================================
+   VOICE HEALING SYSTEM
+   ======================================================= */
+function playShortComfort() {
+    const msg =
+        "You’re safe right now. Breathe with me. I’m here with you. Nothing is wrong with you — you’re just overwhelmed, and that’s okay.";
 
-  header.innerHTML = `<div class="tag">Archetype: ${out.archetype.name} (No. ${out.archNumber})</div>
-                      <h2 style="margin:6px 0">${out.title}</h2>
-                      <p style="opacity:0.9">${out.summary}</p>`;
-
-  body.innerHTML = `<div style="margin-top:12px">${out.detail}</div>
-                    <div class="recommend">
-                      <strong>Suggestions</strong>
-                      <ul style="margin-top:8px">
-                        ${out.suggestions.map(s=>`<li>${s}</li>`).join('')}
-                      </ul>
-                    </div>`;
-
-  advice.innerHTML = `<div style="margin-top:10px">
-                        <strong>Remedies / prompts</strong>
-                        <p>${out.remedies.join(' • ')}</p>
-                      </div>`;
+    speakText(msg);
+    playBackground();
 }
+
+function speakText(text) {
+    const audio = document.getElementById("ttsAudio");
+    audio.src = `https://api.streamelements.com/kappa/v2/speech?voice=${userVoice}&text=${encodeURIComponent(text)}&speed=${voiceSpeed}`;
+    audio.play();
+}
+
+function playBackground() {
+    const bg = document.getElementById("bgAudio");
+
+    const sounds = {
+        none: "",
+        rain: "https://cdn.pixabay.com/download/audio/2023/03/31/audio_99f4c69c16.mp3?filename=rain-ambient.mp3",
+        flute: "https://cdn.pixabay.com/download/audio/2022/10/22/audio_29b0c5e339.mp3?filename=indian-flute.mp3",
+        ocean: "https://cdn.pixabay.com/download/audio/2021/09/08/audio_4256d3e5f2.mp3?filename=ocean-waves.mp3"
+    };
+
+    bg.src = sounds[bgSound];
+    if (bgSound !== "none") bg.play();
+}
+
+
+
+function saveTTSSettings() {
+    userVoice = document.getElementById("ttsVoice").value;
+    bgSound = document.getElementById("bgMusic").value;
+    voiceSpeed = document.getElementById("voiceSpeed").value;
+
+    localStorage.setItem("ttsVoice", userVoice);
+    localStorage.setItem("bgMusic", bgSound);
+    localStorage.setItem("voiceSpeed", voiceSpeed);
+
+    alert("Voice settings saved.");
+}
+
+
+
+/* =======================================================
+   JOURNALING + MOOD TRACKING + PDF EXPORT
+   ======================================================= */
+
+function saveMoodPoint() {
+    const logs = JSON.parse(localStorage.getItem("moodLogs") || "[]");
+    logs.push({
+        emotion: document.getElementById("headline").innerText,
+        time: new Date().toLocaleString()
+    });
+    localStorage.setItem("moodLogs", JSON.stringify(logs));
+    alert("Mood saved.");
+}
+
+function saveJournal() {
+    const text = document.getElementById("feelingText").value;
+    const logs = JSON.parse(localStorage.getItem("journal") || "[]");
+
+    logs.push({
+        entry: text,
+        time: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("journal", JSON.stringify(logs));
+    alert("Journal saved.");
+}
+
+
+function exportPDF() {
+    const content = `
+SeeYa Healing Report
+----------------------
+
+Feeling:
+${document.getElementById("feelingText").value}
+
+Emotion Detected:
+${document.getElementById("headline").innerText}
+
+Explanation:
+${document.getElementById("analysis").innerText}
+
+Steps:
+${document.getElementById("plan").innerText}
+
+Spiritual Guidance:
+${document.getElementById("spiritual").innerText}
+    `;
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "SeeYa_Healing_Report.txt";
+    link.click();
+} 
