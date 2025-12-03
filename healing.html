@@ -1,80 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SeeYa — Healing</title>
-  <link rel="stylesheet" href="style.css?v=1.0.5">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healing</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <main class="page-root">
-    <section class="section-card">
-      <div class="wrap narrow">
-        <h1>Emotional Healing & Support</h1>
-        <p class="muted">Type your feelings below — receive a warm breakdown, practical plan, spiritual suggestions and a soothing voice.</p>
 
-        <textarea id="feelingText" placeholder="I feel..."></textarea>
+<nav class="navbar">
+    <div class="logo">11:11 Healing</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="healing.html" class="active">Healing</a></li>
+        <li><a href="affirmations.html">Affirmations</a></li>
+        <li><a href="voice.html">Voice Healing</a></li>
+    </ul>
+</nav>
 
-        <div class="row cols-2">
-          <select id="feelingTag">
-            <option>Auto-detect</option><option>Sad</option><option>Stressed</option><option>Angry</option>
-            <option>Lonely</option><option>Confused</option><option>Anxious</option><option>Happy</option>
-          </select>
-          <input id="intensity" type="number" min="1" max="10" value="6">
+<section class="page">
+    <h2>Energy Healing</h2>
+    <p>Choose what you need today. Your inner peace matters.</p>
+
+    <div class="card-grid">
+
+        <div class="card">
+            <h3>Emotional Healing</h3>
+            <p>Calm your mind, release stuck emotions and feel lighter.</p>
         </div>
 
-        <div class="row action-row">
-          <button class="btn-primary" onclick="analyzeAndHeal()">Get Support</button>
-          <button class="btn-outline" onclick="playShortComfort()">🎧 Play Voice</button>
-          <button class="btn-ghost" onclick="openTTSSettings()">⚙ TTS Settings</button>
+        <div class="card">
+            <h3>Spiritual Healing</h3>
+            <p>Connect with intuition, angels and deeper alignment.</p>
         </div>
 
-        <div id="resultBox" class="result-box" style="display:none"></div>
-
-        <!-- TTS Settings -->
-        <div id="ttsSettings" class="section-card mt12">
-          <h3>Voice & Background</h3>
-          <div class="row cols-2">
-            <select id="ttsVoice">
-              <option value="Raveena">Raveena (Indian Soft)</option>
-              <option value="Joanna">Joanna (Warm)</option>
-              <option value="Matthew">Matthew (Warm Male)</option>
-            </select>
-            <select id="bgMusic">
-              <option value="none">No background</option>
-              <option value="flute">Indian Flute</option>
-              <option value="rain">Soft Rain</option>
-              <option value="ocean">Ocean</option>
-            </select>
-          </div>
-          <div class="row action-row">
-            <label>Voice Speed<input id="voiceSpeed" type="range" min="0.8" max="1.3" step="0.05" value="1"></label>
-            <button class="btn-primary" onclick="saveTTSSettings()">Save Settings</button>
-          </div>
+        <div class="card">
+            <h3>Self-Love Healing</h3>
+            <p>Feel worthy, safe, loved and connected to yourself.</p>
         </div>
 
-      </div>
-    </section>
-  </main>
+    </div>
+</section>
 
-  <audio id="ttsAudio"></audio>
-  <audio id="bgAudio" loop></audio>
-
-  <script src="script.js?v=1.0.5"></script>
-  <script> /* small glue to render result box */ 
-    function analyzeAndHeal(){
-      const text = document.getElementById('feelingText').value.trim();
-      if(!text) return alert('Please write how you feel');
-      const tag = document.getElementById('feelingTag').value;
-      const intensity = Number(document.getElementById('intensity').value||6);
-      const s = buildSupportiveText(text,intensity,tag);
-      const box = document.getElementById('resultBox');
-      box.style.display='block';
-      box.innerHTML = `<div class="chip">Emotion: ${s.emotion}</div><h3>${s.head}</h3><div class="healing-text">${s.analysis}</div>
-        <details class="mt8"><summary>Plan</summary><pre class="healing-text">${s.plan.join('\n\n')}</pre></details>
-        <div class="mt8"><strong>Spiritual: </strong>${s.spiritual}</div>`;
-      speakText(s.head + " " + s.analysis.split('\n')[0]);
-    }
-  </script>
 </body>
 </html>
