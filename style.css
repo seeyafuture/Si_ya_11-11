@@ -1,0 +1,117 @@
+/* UNIVERSAL STYLING */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #fdf6ff;
+    padding: 20px;
+    color: #333;
+}
+
+/* Heading */
+h1, h2 {
+    text-align: center;
+    color: #9b27b0;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn {
+    display: block;
+    width: 90%;
+    margin: 12px auto;
+    padding: 14px;
+    background: #b400ff;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Input */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Container */
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #e2c8ff;
+    margin-bottom: 20px;
+}/* UNIVERSAL STYLING */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #fdf6ff;
+    padding: 20px;
+    color: #333;
+}
+
+/* Heading */
+h1, h2 {
+    text-align: center;
+    color: #9b27b0;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+.btn {
+    display: block;
+    width: 90%;
+    margin: 12px auto;
+    padding: 14px;
+    background: #b400ff;
+    color: white;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+/* Input */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* Container */
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #e2c8ff;
+    margin-bottom: 20px;
+}
