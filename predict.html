@@ -1,28 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Enter Details</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Predict — See Ya Cool 11</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* small local tweaks for the form */
+    .form-card { max-width:520px; margin:30px auto; padding:18px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid rgba(255,255,255,0.04); }
+    label{display:block;text-align:left;margin:8px 0 6px 0;color:#cfefff}
+    input, select{width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit}
+    .small-note{font-size:13px;opacity:0.8;margin-top:6px}
+  </style>
 </head>
 <body>
-<header>See Ya Future</header>
+  <div class="navbar">
+    <div class="logo">See Ya Cool 11</div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="predict.html">Prediction</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
 
-<div class="container">
-  <h2>Tell me about you</h2>
+  <main class="container">
+    <h2 style="text-align:center;margin-top:26px">Tell us a few things</h2>
 
-  <input id="name" placeholder="Enter your name">
-  <input id="age" type="number" placeholder="Enter your age">
+    <div class="form-card">
+      <label for="name">Your name</label>
+      <input id="name" placeholder="e.g. Aarav" />
 
-  <select id="mood">
-    <option value="Happy">Happy</option>
-    <option value="Confused">Confused</option>
-    <option value="Stressed">Stressed</option>
-    <option value="Excited">Excited</option>
-  </select>
+      <label for="age">Your age</label>
+      <input id="age" type="number" min="3" max="120" placeholder="e.g. 26" />
 
-  <button onclick="submitForm()">See My Future</button>
-</div>
+      <label for="mood">Your current mood</label>
+      <select id="mood">
+        <option>Happy</option>
+        <option>Confused</option>
+        <option>Stressed</option>
+        <option>Excited</option>
+        <option>Calm</option>
+        <option>Motivated</option>
+      </select>
 
-<script src="script.js"></script>
+      <div style="margin-top:14px; display:flex; gap:10px; justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+        <button class="btn btn-primary" onclick="submitForm()">See My Insight</button>
+      </div>
+
+      <p class="small-note">This insight uses simple numerology + age/mood heuristics inspired by traditional Indian ideas for guidance and entertainment. Not a substitute for professional advice.</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
