@@ -3,147 +3,78 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>SeeYa — Healing & Emotional Support</title>
-
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <meta name="theme-color" content="#0f6b66">
+  <title>SeeYa — Healing</title>
+  <link rel="stylesheet" href="style.css?v=1.0.5">
 </head>
-
 <body>
+  <main class="page-root">
+    <section class="section-card">
+      <div class="wrap narrow">
+        <h1>Emotional Healing & Support</h1>
+        <p class="muted">Type your feelings below — receive a warm breakdown, practical plan, spiritual suggestions and a soothing voice.</p>
 
-<!-- HEADER -->
-<header class="site-header">
-  <div class="container header-inner">
-    <div class="brand">
-      <div class="logo-dot"></div>
-      <div class="brand-text">SeeYa</div>
-    </div>
-    <nav class="top-nav">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="predict.html" class="nav-link">Prediction</a>
-      <a href="healing.html" class="nav-link active">Healing</a>
-      <a href="about.html" class="nav-link">About</a>
-      <a href="contact.html" class="nav-link">Contact</a>
-    </nav>
-  </div>
-</header>
+        <textarea id="feelingText" placeholder="I feel..."></textarea>
 
-<!-- MAIN -->
-<main>
-  <section class="section-centered">
-    <div class="container narrow">
-      
-      <div class="healing-card">
-        <h2>Emotional Healing & Support</h2>
-        <p class="muted">
-          Tell me what you're feeling right now — I'll break it down gently,
-          give a logical + emotionally supportive explanation, grounded advice,
-          Indian spiritual practices, and a soft voice comfort.
-        </p>
-
-        <textarea id="feelingText" placeholder="Write what you're feeling..."></textarea>
-
-        <div class="row mt8">
-          <select id="feelingTag" class="col">
-            <option>Auto-detect</option>
-            <option>Sad</option>
-            <option>Stressed</option>
-            <option>Angry</option>
-            <option>Lonely</option>
-            <option>Confused</option>
-            <option>Anxious</option>
-            <option>Happy</option>
+        <div class="row cols-2">
+          <select id="feelingTag">
+            <option>Auto-detect</option><option>Sad</option><option>Stressed</option><option>Angry</option>
+            <option>Lonely</option><option>Confused</option><option>Anxious</option><option>Happy</option>
           </select>
-
-          <input id="intensity" type="number" min="1" max="10" class="small-input" value="6">
+          <input id="intensity" type="number" min="1" max="10" value="6">
         </div>
 
-        <div class="row mt8">
-          <button class="btn btn-primary" onclick="analyzeAndHeal()">Get Support</button>
-          <button class="btn btn-outline" onclick="playShortComfort()">🎧 Voice Healing</button>
-          <button class="btn btn-ghost" onclick="scrollToSettings()">⚙ TTS</button>
+        <div class="row action-row">
+          <button class="btn-primary" onclick="analyzeAndHeal()">Get Support</button>
+          <button class="btn-outline" onclick="playShortComfort()">🎧 Play Voice</button>
+          <button class="btn-ghost" onclick="openTTSSettings()">⚙ TTS Settings</button>
         </div>
 
-        <!-- RESULT BLOCK -->
-        <div id="resultBox" class="home-result mt8" style="display:none">
-          <div id="chips"></div>
-          <h3 id="headline"></h3>
+        <div id="resultBox" class="result-box" style="display:none"></div>
 
-          <div id="analysis" class="muted"></div>
-
-          <details class="mt8">
-            <summary>Step-by-step plan</summary>
-            <pre id="plan" class="muted pre-plan"></pre>
-          </details>
-
-          <div class="mt8">
-            <h4>Spiritual Guidance</h4>
-            <div id="spiritual" class="muted"></div>
+        <!-- TTS Settings -->
+        <div id="ttsSettings" class="section-card mt12">
+          <h3>Voice & Background</h3>
+          <div class="row cols-2">
+            <select id="ttsVoice">
+              <option value="Raveena">Raveena (Indian Soft)</option>
+              <option value="Joanna">Joanna (Warm)</option>
+              <option value="Matthew">Matthew (Warm Male)</option>
+            </select>
+            <select id="bgMusic">
+              <option value="none">No background</option>
+              <option value="flute">Indian Flute</option>
+              <option value="rain">Soft Rain</option>
+              <option value="ocean">Ocean</option>
+            </select>
           </div>
-
-          <div class="mt8">
-            <button class="btn btn-secondary" onclick="saveMoodPoint()">Save Mood</button>
-            <button class="btn btn-secondary" onclick="saveJournal()">Save Journal</button>
-            <button class="btn btn-secondary" onclick="exportPDF()">Export PDF</button>
+          <div class="row action-row">
+            <label>Voice Speed<input id="voiceSpeed" type="range" min="0.8" max="1.3" step="0.05" value="1"></label>
+            <button class="btn-primary" onclick="saveTTSSettings()">Save Settings</button>
           </div>
-
         </div>
+
       </div>
+    </section>
+  </main>
 
-      <!-- TTS SETTINGS -->
-      <section id="ttsSettings" class="section-soft">
-        <h3>Voice Settings</h3>
+  <audio id="ttsAudio"></audio>
+  <audio id="bgAudio" loop></audio>
 
-        <div class="card mt8">
-          <label>Choose Voice:</label>
-          <select id="ttsVoice">
-            <option value="Joanna">Joanna (Calm)</option>
-            <option value="Matthew">Matthew (Warm)</option>
-            <option value="Raveena">Raveena (Indian Soft)</option>
-            <option value="Aditi">Aditi (Indian Calm)</option>
-          </select>
-
-          <label class="mt8">Background Music Type:</label>
-          <select id="bgMusic">
-            <option value="none">None</option>
-            <option value="rain">Rain</option>
-            <option value="flute">Indian Flute</option>
-            <option value="ocean">Ocean Waves</option>
-          </select>
-
-          <label class="mt8">Voice Speed:</label>
-          <input type="range" id="voiceSpeed" min="0.8" max="1.3" step="0.05" value="1">
-
-          <button class="btn btn-primary mt12" onclick="saveTTSSettings()">Save Voice Settings</button>
-        </div>
-      </section>
-
-    </div>
-  </section>
-
-  <footer class="site-footer">
-    <div class="container footer-inner small-muted">
-      © <span id="yr"></span> SeeYa — Gentle support, not medical advice.
-    </div>
-  </footer>
-</main>
-
-<!-- AUDIO -->
-<audio id="ttsAudio"></audio>
-<audio id="bgAudio" loop></audio>
-
-<!-- SCRIPT -->
-<script src="script.js"></script>
-
-<script>
-document.getElementById("yr").innerText = new Date().getFullYear();
-
-function scrollToSettings(){
-  window.location.hash = "#ttsSettings";
-}
-</script>
-
+  <script src="script.js?v=1.0.5"></script>
+  <script> /* small glue to render result box */ 
+    function analyzeAndHeal(){
+      const text = document.getElementById('feelingText').value.trim();
+      if(!text) return alert('Please write how you feel');
+      const tag = document.getElementById('feelingTag').value;
+      const intensity = Number(document.getElementById('intensity').value||6);
+      const s = buildSupportiveText(text,intensity,tag);
+      const box = document.getElementById('resultBox');
+      box.style.display='block';
+      box.innerHTML = `<div class="chip">Emotion: ${s.emotion}</div><h3>${s.head}</h3><div class="healing-text">${s.analysis}</div>
+        <details class="mt8"><summary>Plan</summary><pre class="healing-text">${s.plan.join('\n\n')}</pre></details>
+        <div class="mt8"><strong>Spiritual: </strong>${s.spiritual}</div>`;
+      speakText(s.head + " " + s.analysis.split('\n')[0]);
+    }
+  </script>
 </body>
 </html>
