@@ -1,87 +1,11 @@
-        /* NAVBAR */
-        .navbar {
-            width: 100%;
-            padding: 18px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 20, 50, 0.7);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: #00d9ff;
-        }
-
-        .nav-links a {
-            margin-left: 18px;
-            text-decoration: none;
-            color: #7cf8ff;
-            font-size: 16px;
-            transition: .3s;
-        }
-
-        .nav-links a:hover {
-            color: #00d9ff;
-        }
-
-        /* HERO SECTION */
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .hero h1 {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #a8dfff;
-        }
-
-        /* CARD FEATURES */
-        .features {
-            margin-top: 50px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: .3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 200, 255, 0.2);
-        }
-
-        /* FOOTER */
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            background: #00101f;
-            text-align: center;
-            color: #7cf8ff;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-    </style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See Ya Cool 11</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <!-- NAVBAR -->
@@ -90,7 +14,6 @@
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="predict.html">Prediction</a>
-            <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
         </div>
     </div>
@@ -102,17 +25,17 @@
     </div>
 
     <!-- FEATURES -->
-    <div class="features">
-        <div class="card">⚡ Ultra Fast Performance</div>
-        <div class="card">📱 Mobile Friendly & Responsive</div>
-        <div class="card">🧠 Smart AI Predictions</div>
-        <div class="card">🎨 Smooth Animations</div>
+    <div class="card-features">
+        <div class="card">Ultra Fast Performance</div>
+        <div class="card">Mobile Friendly & Responsive</div>
+        <div class="card">Smart AI Predictions</div>
+        <div class="card">Smooth Animations</div>
     </div>
 
     <!-- FOOTER -->
-    <footer>
-        © 2025 See Ya Cool 11 — All Rights Reserved
-    </footer>
+    <div class="footer">
+        <p>© 2025 See Ya Cool 11 — All Rights Reserved</p>
+    </div>
 
 </body>
 </html>
